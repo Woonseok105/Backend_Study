@@ -22,9 +22,11 @@ class ToDoEntity (
 
     @field:NotNull
     var title = title
+        protected set
 
     @field:NotNull
     var content = content
+        protected set
 
     fun todoUpdate(title: String, content: String, isDone: Boolean) {
         this.title = title
