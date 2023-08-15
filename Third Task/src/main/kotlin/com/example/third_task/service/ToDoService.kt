@@ -40,21 +40,14 @@ class ToDoService(
     }
 
     @Transactional
-    fun complete(id: Long) {
-        val todo = toDoRepository.findByIdOrNull(id)
-            ?: throw IllegalArgumentException("해당 id를 찾을 수 없습니다.")
-
-        todo.todoComplete()
-    }
-
-    @Transactional
     fun update(id: Long, request: ToDoUpdateRequest) {
         val todo = toDoRepository.findByIdOrNull(id)
             ?: throw IllegalArgumentException("해당 id를 찾을 수 없습니다.")
 
-        todo.todoUpdate(request.title, request.content)
+        todo.todoUpdate(request.title, request.content, request.isDone)
     }
 
+    @Transactional
     fun delete(id: Long) {
         val todo = toDoRepository.findByIdOrNull(id)
             ?: throw IllegalArgumentException("해당 id를 찾을 수 없습니다.")

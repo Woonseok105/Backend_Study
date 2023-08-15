@@ -27,12 +27,6 @@ class ToDoController(
         return toDoService.checkList()
     }
 
-    @PutMapping("/complete/{id}")
-    fun complete(@PathVariable("id") id: Long) {
-        toDoService.complete(id)
-    }
-
-
     @PutMapping("/update/{id}")
     fun update(@PathVariable("id") id: Long, @RequestBody request: ToDoUpdateRequest) {
         toDoService.update(id, request)

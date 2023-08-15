@@ -26,13 +26,9 @@ class ToDoEntity (
     @field:NotNull
     var content = content
 
-    fun todoComplete() {
-        this.isDone = true
-    }
-
-    fun todoUpdate(title: String, content: String) {
+    fun todoUpdate(title: String, content: String, isDone: Boolean) {
         this.title = title
         this.content = content
+        this.isDone = isDone
     }
-
 }
