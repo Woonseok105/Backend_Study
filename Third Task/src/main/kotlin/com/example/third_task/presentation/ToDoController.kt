@@ -1,16 +1,13 @@
 package com.example.third_task.presentation
 
-import com.example.third_task.service.ToDoService
 import com.example.third_task.presentation.dto.request.ToDoAddRequest
 import com.example.third_task.presentation.dto.request.ToDoUpdateRequest
 import com.example.third_task.presentation.dto.response.ToDoCheckResponse
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import com.example.third_task.service.ToDoService
+import org.springframework.http.MediaType
+import org.springframework.web.bind.annotation.*
+import org.springframework.web.reactive.function.BodyInserters
+import org.springframework.web.reactive.function.client.WebClient
 
 @RestController
 class ToDoController(
@@ -35,5 +32,20 @@ class ToDoController(
     @DeleteMapping("/delete/{id}")
     fun delete(@PathVariable("id") id: Long) {
         toDoService.delete(id)
+    }
+
+    @PostMapping("/webClient")
+    fun webClient(@RequestBody request: ToDoAddRequest) {
+        val client = WebClient.create()
+
+        for (i in 1..1000) {
+            client.post()
+                .uri("http://localhost:8080/add")
+                .contentType(MediaType.APPLICATION_JSON) // 이 부분에 POST 요청으로 전송할 콘텐츠 타입 지정
+                .body(BodyInserters.fromValue(request)) // POST 요청으로 보낼 데이터 지정
+                .retrieve()
+                .bodyToMono(String::class.java)
+                .block()
+        }
     }
 }
