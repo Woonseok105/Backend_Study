@@ -1,4 +1,4 @@
-package com.example.third_task.domain
+package com.example.assignment.todo.domain
 
 import org.jetbrains.annotations.NotNull
 import javax.persistence.*

@@ -1,11 +1,11 @@
-package com.example.third_task
+package com.example.assignment
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class ThirdTaskApplication
+class AssignmentApplication
 
 fun main(args: Array<String>) {
-    runApplication<ThirdTaskApplication>(*args)
+    runApplication<AssignmentApplication>(*args)
 }

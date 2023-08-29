@@ -1,11 +1,11 @@
-package com.example.third_task.service
+package com.example.assignment.todo.service
 
-import com.example.third_task.domain.ToDoEntity
-import com.example.third_task.domain.ToDoRepository
-import com.example.third_task.presentation.dto.request.ToDoAddRequest
-import com.example.third_task.presentation.dto.request.ToDoUpdateRequest
-import com.example.third_task.presentation.dto.response.ToDoCheckResponse
-import com.example.third_task.presentation.dto.response.ToDoList
+import com.example.assignment.todo.domain.ToDoEntity
+import com.example.assignment.todo.domain.ToDoRepository
+import com.example.assignment.todo.presentation.dto.request.ToDoAddRequest
+import com.example.assignment.todo.presentation.dto.request.ToDoUpdateRequest
+import com.example.assignment.todo.presentation.dto.response.ToDoCheckResponse
+import com.example.assignment.todo.presentation.dto.response.ToDoList
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.lang.IllegalArgumentException

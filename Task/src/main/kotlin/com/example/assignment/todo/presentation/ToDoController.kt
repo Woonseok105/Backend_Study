@@ -1,9 +1,9 @@
-package com.example.third_task.presentation
+package com.example.assignment.todo.presentation
 
-import com.example.third_task.presentation.dto.request.ToDoAddRequest
-import com.example.third_task.presentation.dto.request.ToDoUpdateRequest
-import com.example.third_task.presentation.dto.response.ToDoCheckResponse
-import com.example.third_task.service.ToDoService
+import com.example.assignment.todo.presentation.dto.request.ToDoAddRequest
+import com.example.assignment.todo.presentation.dto.request.ToDoUpdateRequest
+import com.example.assignment.todo.presentation.dto.response.ToDoCheckResponse
+import com.example.assignment.todo.service.ToDoService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.reactive.function.BodyInserters
@@ -47,5 +47,10 @@ class ToDoController(
                 .bodyToMono(String::class.java)
                 .block()
         }
+    }
+
+    @GetMapping("/test")
+    fun test(): String {
+        return "TEST API"
     }
 }
