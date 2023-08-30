@@ -1,9 +1,10 @@
-package com.example.assignment.todo.presentation
+package com.example.assignment.domain.todo.presentation
 
-import com.example.assignment.todo.presentation.dto.request.ToDoAddRequest
-import com.example.assignment.todo.presentation.dto.request.ToDoUpdateRequest
-import com.example.assignment.todo.presentation.dto.response.ToDoCheckResponse
-import com.example.assignment.todo.service.ToDoService
+import com.example.assignment.domain.todo.presentation.dto.request.ToDoAddRequest
+import com.example.assignment.domain.todo.presentation.dto.request.ToDoSignInRequest
+import com.example.assignment.domain.todo.presentation.dto.request.ToDoUpdateRequest
+import com.example.assignment.domain.todo.presentation.dto.response.ToDoCheckResponse
+import com.example.assignment.domain.todo.service.ToDoService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.reactive.function.BodyInserters
@@ -20,8 +21,8 @@ class ToDoController(
     }
 
     @GetMapping("/check")
-    fun checkToDo(): ToDoCheckResponse {
-        return toDoService.checkList()
+    fun checkToDo(@RequestBody request: ToDoSignInRequest): ToDoCheckResponse {
+        return toDoService.checkList(request)
     }
 
     @PutMapping("/update/{id}")
@@ -30,8 +31,8 @@ class ToDoController(
     }
 
     @DeleteMapping("/delete/{id}")
-    fun delete(@PathVariable("id") id: Long) {
-        toDoService.delete(id)
+    fun delete(@PathVariable("id") id: Long, @RequestBody request: ToDoSignInRequest) {
+        toDoService.delete(id, request)
     }
 
     @PostMapping("/webClient")

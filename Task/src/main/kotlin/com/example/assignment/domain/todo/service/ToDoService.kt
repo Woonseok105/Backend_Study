@@ -1,11 +1,15 @@
-package com.example.assignment.todo.service
+package com.example.assignment.domain.todo.service
 
-import com.example.assignment.todo.domain.ToDoEntity
-import com.example.assignment.todo.domain.ToDoRepository
-import com.example.assignment.todo.presentation.dto.request.ToDoAddRequest
-import com.example.assignment.todo.presentation.dto.request.ToDoUpdateRequest
-import com.example.assignment.todo.presentation.dto.response.ToDoCheckResponse
-import com.example.assignment.todo.presentation.dto.response.ToDoList
+import com.example.assignment.domain.todo.domain.ToDoEntity
+import com.example.assignment.domain.todo.domain.ToDoRepository
+import com.example.assignment.domain.todo.exception.ToDoNotFoundException
+import com.example.assignment.domain.todo.presentation.dto.request.ToDoAddRequest
+import com.example.assignment.domain.todo.presentation.dto.request.ToDoSignInRequest
+import com.example.assignment.domain.todo.presentation.dto.request.ToDoUpdateRequest
+import com.example.assignment.domain.todo.presentation.dto.response.ToDoCheckResponse
+import com.example.assignment.domain.todo.presentation.dto.response.ToDoList
+import com.example.assignment.domain.user.exception.UnAuthorizedException
+import com.example.assignment.domain.user.facade.UserFacade
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.lang.IllegalArgumentException
@@ -13,20 +17,35 @@ import javax.transaction.Transactional
 
 @Service
 class ToDoService(
-    private val toDoRepository: ToDoRepository
+    private val toDoRepository: ToDoRepository,
+    private val userFacade: UserFacade
 ) {
 
     fun addToDo(request: ToDoAddRequest) {
+
+        val user = userFacade.getUserByAccountId(request.accountId)
+
+        if (!user.password.equals(request.password)) {
+            throw UnAuthorizedException
+        }
+
         toDoRepository.save(
             ToDoEntity(
                 title = request.title,
-                content = request.content
+                content = request.content,
+                userEntity = user
             )
         )
     }
 
-    fun checkList(): ToDoCheckResponse {
-        val todo = toDoRepository.findAll()
+    fun checkList(request: ToDoSignInRequest): ToDoCheckResponse {
+        val user = userFacade.getUserByAccountId(request.accountId)
+
+        if (!user.password.equals(request.password)) {
+            throw UnAuthorizedException
+        }
+
+        val todo = toDoRepository.findAllByUserEntity(user)
 
         return ToDoCheckResponse(
             toDoList = todo.map {
@@ -41,16 +60,30 @@ class ToDoService(
 
     @Transactional
     fun update(id: Long, request: ToDoUpdateRequest) {
+
+        val user = userFacade.getUserByAccountId(request.accountId)
+
+        if (!user.password.equals(request.password)) {
+            throw UnAuthorizedException
+        }
+
         val todo = toDoRepository.findByIdOrNull(id)
-            ?: throw IllegalArgumentException("해당 id를 찾을 수 없습니다.")
+            ?: throw ToDoNotFoundException
 
         todo.todoUpdate(request.title, request.content, request.isDone)
     }
 
     @Transactional
-    fun delete(id: Long) {
+    fun delete(id: Long, request: ToDoSignInRequest) {
+
+        val user = userFacade.getUserByAccountId(request.accountId)
+
+        if (!user.password.equals(request.password)) {
+            throw UnAuthorizedException
+        }
+
         val todo = toDoRepository.findByIdOrNull(id)
-            ?: throw IllegalArgumentException("해당 id를 찾을 수 없습니다.")
+            ?: throw ToDoNotFoundException
 
         toDoRepository.delete(todo)
     }

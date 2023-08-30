@@ -1,8 +1,6 @@
 package com.example.assignment.domain.todo.presentation.dto.request
 
-class ToDoAddRequest (
+class ToDoSignInRequest (
     val accountId: String,
-    val password: String,
-    val title: String,
-    val content: String
+    val password: String
 )

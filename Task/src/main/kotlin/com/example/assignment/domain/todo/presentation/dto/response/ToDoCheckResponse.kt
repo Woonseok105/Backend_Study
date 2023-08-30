@@ -1,4 +1,4 @@
-package com.example.assignment.todo.presentation.dto.response
+package com.example.assignment.domain.todo.presentation.dto.response
 
 class ToDoCheckResponse (
     val toDoList: List<ToDoList>

@@ -1,5 +1,6 @@
-package com.example.assignment.todo.domain
+package com.example.assignment.domain.todo.domain
 
+import com.example.assignment.domain.user.domain.UserEntity
 import org.jetbrains.annotations.NotNull
 import javax.persistence.*
 
@@ -16,7 +17,11 @@ class ToDoEntity (
     content: String,
 
     @field:NotNull
-    var isDone: Boolean = false
+    var isDone: Boolean = false,
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    val userEntity: UserEntity
 
 ) {
 
