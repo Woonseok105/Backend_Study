@@ -7,8 +7,8 @@ import com.example.assignment.domain.todo.presentation.dto.response.ToDoCheckRes
 import com.example.assignment.domain.todo.service.ToDoService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.reactive.function.BodyInserters
-import org.springframework.web.reactive.function.client.WebClient
+//import org.springframework.web.reactive.function.BodyInserters
+//import org.springframework.web.reactive.function.client.WebClient
 
 @RestController
 class ToDoController(
@@ -16,8 +16,8 @@ class ToDoController(
 ) {
 
     @PostMapping("/add")
-    fun addToDo(@RequestBody request: ToDoAddRequest) {
-        toDoService.addToDo(request)
+    fun addToDo(@RequestHeader("Authorization") encodedString: String, @RequestBody request: ToDoAddRequest) {
+        toDoService.addToDo(encodedString, request)
     }
 
     @GetMapping("/check")
@@ -35,20 +35,20 @@ class ToDoController(
         toDoService.delete(id, request)
     }
 
-    @PostMapping("/webClient")
-    fun webClient(@RequestBody request: ToDoAddRequest) {
-        val client = WebClient.create()
-
-        for (i in 1..1000) {
-            client.post()
-                .uri("http://localhost:8080/add")
-                .contentType(MediaType.APPLICATION_JSON) // 이 부분에 POST 요청으로 전송할 콘텐츠 타입 지정
-                .body(BodyInserters.fromValue(request)) // POST 요청으로 보낼 데이터 지정
-                .retrieve()
-                .bodyToMono(String::class.java)
-                .block()
-        }
-    }
+//    @PostMapping("/webClient")
+//    fun webClient(@RequestBody request: ToDoAddRequest) {
+//        val client = WebClient.create()
+//
+//        for (i in 1..1000) {
+//            client.post()
+//                .uri("http://localhost:8080/add")
+//                .contentType(MediaType.APPLICATION_JSON) // 이 부분에 POST 요청으로 전송할 콘텐츠 타입 지정
+//                .body(BodyInserters.fromValue(request)) // POST 요청으로 보낼 데이터 지정
+//                .retrieve()
+//                .bodyToMono(String::class.java)
+//                .block()
+//        }
+//    }
 
     @GetMapping("/test")
     fun test(): String {

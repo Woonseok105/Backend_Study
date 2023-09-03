@@ -8,26 +8,35 @@ import com.example.assignment.domain.todo.presentation.dto.request.ToDoSignInReq
 import com.example.assignment.domain.todo.presentation.dto.request.ToDoUpdateRequest
 import com.example.assignment.domain.todo.presentation.dto.response.ToDoCheckResponse
 import com.example.assignment.domain.todo.presentation.dto.response.ToDoList
+import com.example.assignment.domain.user.domain.UserRepository
 import com.example.assignment.domain.user.exception.UnAuthorizedException
+import com.example.assignment.domain.user.exception.UserNotFoundException
 import com.example.assignment.domain.user.facade.UserFacade
+import io.netty.handler.codec.base64.Base64Decoder
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.lang.IllegalArgumentException
+import java.util.*
 import javax.transaction.Transactional
 
 @Service
 class ToDoService(
     private val toDoRepository: ToDoRepository,
-    private val userFacade: UserFacade
+    private val userFacade: UserFacade,
+    private val userRepository: UserRepository
 ) {
 
-    fun addToDo(request: ToDoAddRequest) {
+    fun addToDo(encodedString: String, request: ToDoAddRequest) {
 
-        val user = userFacade.getUserByAccountId(request.accountId)
+//        val user = userFacade.getUserByAccountId(request.accountId)
+//
+//        if (!user.password.equals(request.password)) {
+//            throw UnAuthorizedException
+//        }
 
-        if (!user.password.equals(request.password)) {
-            throw UnAuthorizedException
-        }
+        val decodedString = decode(encodedString)
+        val user = userRepository.findByAccountIdAndPassword(decodedString[0], decodedString[1])
+            ?: throw UserNotFoundException
 
         toDoRepository.save(
             ToDoEntity(
@@ -87,4 +96,8 @@ class ToDoService(
 
         toDoRepository.delete(todo)
     }
+
+    fun decode(encodedString: String): List<String> =
+        String(Base64.getDecoder().decode(encodedString)).split(":")
+
 }
