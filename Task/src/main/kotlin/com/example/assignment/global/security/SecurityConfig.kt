@@ -30,9 +30,9 @@ class SecurityConfig(
         http
             .authorizeRequests()
 
-            .antMatchers(HttpMethod.POST, "/post").authenticated()
+            .antMatchers("/users/todo/**").authenticated()
 
-            .anyRequest().permitAll()
+//            .anyRequest().permitAll()
             .and().apply(FilterConfig(jwtParser, objectMapper))
 
         return http.build()

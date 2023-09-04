@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*
 //import org.springframework.web.reactive.function.client.WebClient
 
 @RestController
+@RequestMapping("/users/todo")
 class ToDoController(
     private val toDoService: ToDoService
 ) {
