@@ -1,0 +1,22 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= Spring REST Docs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+[[resources-post]]
+== Post
+
+[[resources-post-create]]
+=== 회원가입
+
+==== HTTP request
+
+include::{snippets}/Create User/http-request.adoc[]
+
+==== HTTP responsea
+
+include::{snippets}/Create User/http-response.adoc[]
