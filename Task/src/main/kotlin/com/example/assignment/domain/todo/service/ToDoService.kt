@@ -23,20 +23,11 @@ import javax.transaction.Transactional
 class ToDoService(
     private val toDoRepository: ToDoRepository,
     private val userFacade: UserFacade,
-    private val userRepository: UserRepository
 ) {
 
-    fun addToDo(encodedString: String, request: ToDoAddRequest) {
+    fun addToDo(request: ToDoAddRequest) {
 
-//        val user = userFacade.getUserByAccountId(request.accountId)
-//
-//        if (!user.password.equals(request.password)) {
-//            throw UnAuthorizedException
-//        }
-
-        val decodedString = decode(encodedString)
-        val user = userRepository.findByAccountIdAndPassword(decodedString[0], decodedString[1])
-            ?: throw UserNotFoundException
+        val user = userFacade.getCurrentUser()
 
         toDoRepository.save(
             ToDoEntity(

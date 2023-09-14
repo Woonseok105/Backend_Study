@@ -5,33 +5,38 @@ import com.example.assignment.domain.todo.presentation.dto.request.ToDoSignInReq
 import com.example.assignment.domain.todo.presentation.dto.request.ToDoUpdateRequest
 import com.example.assignment.domain.todo.presentation.dto.response.ToDoCheckResponse
 import com.example.assignment.domain.todo.service.ToDoService
-import org.springframework.http.MediaType
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
+
 //import org.springframework.web.reactive.function.BodyInserters
 //import org.springframework.web.reactive.function.client.WebClient
 
 @RestController
-@RequestMapping("/users/todo")
+@RequestMapping("/users/me/todos")
 class ToDoController(
     private val toDoService: ToDoService
 ) {
 
-    @PostMapping("/add")
-    fun addToDo(@RequestHeader("Authorization") encodedString: String, @RequestBody request: ToDoAddRequest) {
-        toDoService.addToDo(encodedString, request)
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping
+    fun addToDo(@RequestBody @Valid request: ToDoAddRequest) {
+        toDoService.addToDo(request)
     }
 
-    @GetMapping("/check")
+    @GetMapping
     fun checkToDo(@RequestBody request: ToDoSignInRequest): ToDoCheckResponse {
         return toDoService.checkList(request)
     }
 
-    @PutMapping("/update/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PatchMapping("/{id}")
     fun update(@PathVariable("id") id: Long, @RequestBody request: ToDoUpdateRequest) {
         toDoService.update(id, request)
     }
 
-    @DeleteMapping("/delete/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{id}")
     fun delete(@PathVariable("id") id: Long, @RequestBody request: ToDoSignInRequest) {
         toDoService.delete(id, request)
     }

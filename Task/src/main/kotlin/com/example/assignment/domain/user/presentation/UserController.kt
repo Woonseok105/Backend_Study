@@ -13,24 +13,24 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 class UserController (
     private val signUpService: SignUpService,
     private val signInService: SignInService,
     private val refreshTokenService: RefreshTokenService
 ) {
 
-    @PostMapping("/register")
+    @PostMapping
     fun signUp(@RequestBody request: SignUpRequest) {
         signUpService.execute(request)
     }
 
-    @PostMapping("/auth")
+    @PostMapping("/auth/login")
     fun signIn(@RequestBody request: SignInRequest): TokenResponse {
         return signInService.execute(request)
     }
 
-    @PostMapping("/refresh")
+    @PostMapping("/auth/refresh")
     fun refresh(@RequestHeader("REFRESH-TOKEN") token: String): TokenResponse {
         return refreshTokenService.execute(token)
     }
